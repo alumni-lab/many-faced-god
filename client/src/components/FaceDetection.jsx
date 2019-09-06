@@ -24,10 +24,11 @@ faceapi.env.monkeyPatch({
 })
 
 function FaceDetection(props) {
-  const { imageURL, setLoadingModels, setLoadingDetection, imageFile } = props;
+  const {imageURL, setLoadingModels, setLoadingDetection, imageFile} = props;
 
   const [detectedFaces, setDetectedFaces] = useState(false);
   const [visibleFaces, setVisibleFaces] = useState(true);
+  const [facesCoordinates, setFacesCoordinates] = useState([]);
 
   useEffect(() => {
     const path = '/models';
@@ -50,6 +51,10 @@ function FaceDetection(props) {
     const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
     resizedDetections.forEach(detection => {
+      setFacesCoordinates(facesCoordinates => [
+        ...facesCoordinates, 
+        detection.detection.box,
+      ]);
       const box = detection.detection.box;
       const drawBox = new faceapi.draw.DrawBox(box);
       drawBox.draw(canvas);
@@ -62,19 +67,40 @@ function FaceDetection(props) {
     return visibleFaces ? setVisibleFaces(false) : setVisibleFaces(true);
   }
 
+  const handleClickFace = (divPositioning) => {
+    console.log(divPositioning);
+  }
+  
   return (
     <Fragment>
       <div className="image-container">
-        { imageURL && 
+        {imageURL && 
           <Fragment>
-            <img src={ imageURL } alt="img"/>
-            <canvas id="detected-faces" className={ visibleFaces ? "" : "invisible" }/>
+            <img src={imageURL} alt="img"/>
+            <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"}/>
+            {facesCoordinates.map(faceCoordinates => {
+              const divPositioning = {
+                top: faceCoordinates._y,
+                left: faceCoordinates._x,
+                height: faceCoordinates._height,
+                width: faceCoordinates._width,
+              }
+              return (
+                <div 
+                  className={"face" + (visibleFaces ? "" : " invisible")} 
+                  style={divPositioning} 
+                  key={faceCoordinates._x}
+                  onClick={() => handleClickFace(divPositioning)}
+                >
+                </div>
+              )
+            })}
           </Fragment>
         }
       </div>  
-      { detectedFaces &&
+      {detectedFaces &&
           <label className="switch">
-            <input type="checkbox" defaultChecked={ visibleFaces } onChange={ handleToggleSwitch } />
+            <input type="checkbox" defaultChecked={visibleFaces} onChange={handleToggleSwitch} />
             <span className="slider round"></span>
           </label>
       }
