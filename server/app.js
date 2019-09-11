@@ -4,6 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+var shell = require('shelljs');
 
 const app = express();
 
@@ -18,13 +19,19 @@ app.use('/public', express.static(__dirname + '/public'));
 app.post('/upload', (req, res, next) => {
   let imageFile = req.files.file;
   const filename = 'image.jpg'
+  
   imageFile.mv(`${__dirname}/public/${filename}`, function(err) {
     if (err) {
       return res.status(500).send(err);
     }
     res.json({file: `public/${filename}`});
   });
+})
 
+app.post('/faceswap', (req, res, next) => {
+  const {divPositioning} = req.body;
+  const {top, left, height, width} = divPositioning;
+  shell.exec(`convert public/image.jpg -crop ${width}x${height}+${top}+${left} public/crop.jpg`)
 })
 
 // catch 404 and forward to error handler
