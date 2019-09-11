@@ -9,33 +9,42 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 // app.use(cookieParser());
 app.use(fileUpload());
 app.use('/public', express.static(__dirname + '/public'));
 
 
 app.post('/upload', (req, res, next) => {
+  // convert image.jpg - crop 100 x100 + 150 + 150 crop.jpg to crop
   let imageFile = req.files.file;
   const filename = 'image.jpg'
-  imageFile.mv(`${__dirname}/public/${filename}`, function(err) {
+  imageFile.mv(`${__dirname}/public/${filename}`, function (err) {
     if (err) {
       return res.status(500).send(err);
     }
-    res.json({file: `public/${filename}`});
+    res.json({
+      file: `public/${filename}`
+    });
   });
 
 })
 
+app.post('/faceswap', (req, res, ) => {
+  console.log(req.body.divPositioning)
+});
+
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
