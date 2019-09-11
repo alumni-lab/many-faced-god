@@ -4,6 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+var shell = require('shelljs');
 
 const app = express();
 
@@ -29,7 +30,12 @@ app.post('/upload', (req, res, next) => {
       file: `public/${filename}`
     });
   });
+})
 
+app.post('/faceswap', (req, res, next) => {
+  const {divPositioning} = req.body;
+  const {top, left, height, width} = divPositioning;
+  shell.exec(`convert public/image.jpg -crop ${width}x${height}+${left}+${top} public/crop.jpg`)
 })
 
 app.post('/faceswap', (req, res, ) => {
