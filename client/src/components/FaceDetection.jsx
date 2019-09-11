@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-
+import axios from "axios";
 // import nodejs bindings to native tensorflow,
 // not required, but will speed up things drastically (python required)
 // import '@tensorflow/tfjs-node';
@@ -14,7 +14,7 @@ import * as faceapi from 'face-api.js';
 // HTMLCanvasElement and HTMLImageElement, additionally an implementation
 // of ImageData is required, in case you want to use the MTCNN
 const { ImageData } = canvas
-faceapi.env.monkeyPatch({ 
+faceapi.env.monkeyPatch({
   Canvas: HTMLCanvasElement,
   Image: HTMLImageElement,
   ImageData: ImageData,
@@ -24,7 +24,7 @@ faceapi.env.monkeyPatch({
 })
 
 function FaceDetection(props) {
-  const {imageURL, setLoadingModels, setLoadingDetection, imageFile} = props;
+  const { imageURL, setLoadingModels, setLoadingDetection, imageFile } = props;
 
   const [detectedFaces, setDetectedFaces] = useState(false);
   const [visibleFaces, setVisibleFaces] = useState(true);
@@ -52,7 +52,7 @@ function FaceDetection(props) {
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
     resizedDetections.forEach(detection => {
       setFacesCoordinates(facesCoordinates => [
-        ...facesCoordinates, 
+        ...facesCoordinates,
         detection.detection.box,
       ]);
       const box = detection.detection.box;
@@ -68,16 +68,19 @@ function FaceDetection(props) {
   }
 
   const handleClickFace = (divPositioning) => {
+    axios.post('http://localhost:3001/faceswap', {
+      divPositioning
+    })
     console.log(divPositioning);
   }
-  
+
   return (
     <Fragment>
       <div className="image-container">
-        {imageURL && 
+        {imageURL &&
           <Fragment>
-            <img src={imageURL} alt="img"/>
-            <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"}/>
+            <img src={imageURL} alt="img" />
+            <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"} />
             {facesCoordinates.map(faceCoordinates => {
               const divPositioning = {
                 top: faceCoordinates._y,
@@ -86,9 +89,9 @@ function FaceDetection(props) {
                 width: faceCoordinates._width,
               }
               return (
-                <div 
-                  className={"face" + (visibleFaces ? "" : " invisible")} 
-                  style={divPositioning} 
+                <div
+                  className={"face" + (visibleFaces ? "" : " invisible")}
+                  style={divPositioning}
                   key={faceCoordinates._x}
                   onClick={() => handleClickFace(divPositioning)}
                 >
@@ -97,12 +100,12 @@ function FaceDetection(props) {
             })}
           </Fragment>
         }
-      </div>  
+      </div>
       {detectedFaces &&
-          <label className="switch">
-            <input type="checkbox" defaultChecked={visibleFaces} onChange={handleToggleSwitch} />
-            <span className="slider round"></span>
-          </label>
+        <label className="switch">
+          <input type="checkbox" defaultChecked={visibleFaces} onChange={handleToggleSwitch} />
+          <span className="slider round"></span>
+        </label>
       }
     </Fragment>
   );
