@@ -35,7 +35,7 @@ app.post('/upload', (req, res, next) => {
 app.post('/faceswap', (req, res, next) => {
   const {divPositioning} = req.body;
   const {top, left, height, width} = divPositioning;
-  shell.exec(`convert public/image.jpg -crop ${width}x${height}+${top}+${left} public/crop.jpg`)
+  shell.exec(`convert public/image.jpg -crop ${width}x${height}+${left}+${top} public/crop.jpg`)
 })
 
 app.post('/faceswap', (req, res, ) => {
