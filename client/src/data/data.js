@@ -6,18 +6,20 @@ const data = {
     "properties": [
         {
             "index": 0,
-            "picture": {Matthew},
+            "picture": Matthew,
             "header": 'Current'
         },
         {
-            "index": 0,
-            "picture": {Daniel},
+            "index": 1,
+            "picture": Daniel,
             "header": ''
         },
         {
-            "index": 0,
-            "picture": {Elliot},
+            "index": 2,
+            "picture": Elliot,
             "header": 'Original'
         }
     ]
 }
+
+export default data
