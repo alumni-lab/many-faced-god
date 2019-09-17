@@ -36,3 +36,4 @@ Things to think about:
 
 - `npm i` on both `/server` and `/client` to install dependencies
 - using two terminals `npm start` to run both server and client
+- make sure you have imagemagick installed. On Mac you can run `brew install imagemagick`, given that you have Homebrew installed.
