@@ -4,6 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+const download = require('image-downloader')
 var shell = require('shelljs');
 
 const app = express();
@@ -33,9 +34,22 @@ app.post('/upload', (req, res, next) => {
 })
 
 app.post('/faceswap', (req, res, next) => {
-  const {divPositioning} = req.body;
-  const {top, left, height, width} = divPositioning;
+  const { divPositioning } = req.body;
+  const { top, left, height, width } = divPositioning;
   shell.exec(`convert public/image.jpg -crop ${width}x${height}+${left}+${top} public/crop.jpg`)
+
+  const options = {
+    url: 'https://thispersondoesnotexist.com/image',
+    dest: './public/faceswap.jpg',               // Save to /path/to/dest/image.jpg
+    timeout: 5000
+  }
+
+  download.image(options)
+    .then(({ filename, image }) => {
+      console.log('Saved to', filename)  // Saved to /path/to/dest/image.jpg
+    })
+    .catch((err) => console.error(err))
+
 })
 
 app.post('/faceswap', (req, res, ) => {
