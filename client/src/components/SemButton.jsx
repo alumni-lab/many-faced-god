@@ -35,34 +35,32 @@ export class SemButton extends Component {
     // Have only one card show up at a time
 
     render() {
-        return (
-            <div>
-                {this.state.showFaces ?
-                    (
-                        <div
-                            className="face"
-                            style={this.state.cardPositioning}
-                            key={this.props.faceCoordinates._x}
-                        >
-                            <Label as='a' basic pointing='above'>
-                                <SemCard handleFaceClick={this.handleClose} />
-                            </Label>
-                        </div>
-                    )
-                    :
-                    (
-                        <div
-                            className="face"
-                            style={this.props.divPositioning}
-                            key={this.props.faceCoordinates._x}
-                            onClick={this.handleFaceClick}
-                        >
-                        </div>
-                    )
-                }
 
-            </div>
+        return (
+            this.state.showFaces ?
+                (
+                    <div
+                        className="face"
+                        style={this.state.cardPositioning}
+                        key={this.props.faceCoordinates._x}
+                    >
+                        <Label as='a' basic pointing='above'>
+                            <SemCard handleFaceClick={this.handleClose} />
+                        </Label>
+                    </div>
+                )
+                :
+                (
+                    <div
+                        className="face"
+                        style={this.props.divPositioning}
+                        key={this.props.faceCoordinates._x}
+                        onClick={this.handleFaceClick}
+                    >
+                    </div>
+                )
         )
+
     }
 }
 
