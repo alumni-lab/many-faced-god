@@ -10,7 +10,7 @@ When contributing to this repository, please start by taking a look at the open 
 4. Routinely pull from this repo into your branch to make sure that you're working on up-to-date code
 
 ```
-git pull https://github.com/alumni-lab/THIS_REPOSITORY.git YOUR_BRANCH_NAME
+git pull https://github.com/alumni-lab/many-faced-god.git YOUR_BRANCH_NAME
 ```
 
 5. If there are conflicts when you pull from this repo, fix them!
