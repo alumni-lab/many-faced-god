@@ -32,9 +32,7 @@ function App() {
       }
       <br></br>
 
-      {/* <SemCard /> */}
-
-      <SemButton />
+      {/* <SemButton /> */}
 
     </Fragment>
   );

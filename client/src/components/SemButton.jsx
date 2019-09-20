@@ -7,46 +7,59 @@ export class SemButton extends Component {
         super(props);
 
         this.state = {
-            showFaces: false
+            showFaces: false,
+            cardPositioning: this.props.divPositioning
         };
     };
 
     handleFaceClick = () => {
+        let positioning = {
+            top: this.props.divPositioning['top'] + 100,
+            left: this.props.divPositioning['left'] - 125,
+            height: this.props.divPositioning['height'],
+            width: this.props.divPositioning['width']
+        };
+
         this.setState({
-            showFaces: !this.state.showFaces
+            showFaces: !this.state.showFaces,
+            cardPositioning: positioning
         });
     };
 
+    handleClose = () => {
+        this.setState({
+            showFaces: !this.state.showFaces
+        })
+    }
+
+    // Have only one card show up at a time
 
     render() {
         return (
             <div>
                 {this.state.showFaces ?
                     (
-                        <Button as='div' labelPosition='right'>
-                            <Button icon>
-                                <Icon name='user' />
-                                Faces
-                            </Button>
-                            
-                            <Label as='a' basic pointing='left'>
-                                <SemCard handleFaceClick={this.handleFaceClick}/>
+                        <div
+                            className="face"
+                            style={this.state.cardPositioning}
+                            key={this.props.faceCoordinates._x}
+                        >
+                            <Label as='a' basic pointing='above'>
+                                <SemCard handleFaceClick={this.handleClose} />
                             </Label>
-                        </Button>
+                        </div>
                     )
                     :
-                    (<Button onClick={this.handleFaceClick}>
-                        <Icon name='user' />
-                        Show Faces
-                    </Button>)
+                    (
+                        <div
+                            className="face"
+                            style={this.props.divPositioning}
+                            key={this.props.faceCoordinates._x}
+                            onClick={this.handleFaceClick}
+                        >
+                        </div>
+                    )
                 }
-                {/* <Button animated='vertical'>
-                    <Button.Content hidden>Faces</Button.Content>
-                    <Button.Content visible>
-                        <Icon name='user'/>
-                    </Button.Content>
-                </Button> */}
-                {/* <SemCard /> */}
 
             </div>
         )
