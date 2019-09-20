@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import FileUpload from './components/FileUpload';
 import FaceDetection from './components/FaceDetection';
-
+import SemButton from './components/SemButton';
+import SemCard from './components/SemCard';
 import './App.css';
 
 function App() {
@@ -13,15 +14,15 @@ function App() {
 
   return (
     <Fragment>
-      <FileUpload 
-        setImageURL={ setImageURL }
-        setImageFile={ setImageFile }
+      <FileUpload
+        setImageURL={setImageURL}
+        setImageFile={setImageFile}
       />
       <FaceDetection
-        imageURL={ imageURL }
-        setLoadingModels={ setLoadingModels }
-        setLoadingDetection={ setLoadingDetection }
-        imageFile={ imageFile }
+        imageURL={imageURL}
+        setLoadingModels={setLoadingModels}
+        setLoadingDetection={setLoadingDetection}
+        imageFile={imageFile}
       />
       {loadingModels &&
         <p>Loading Models...</p>
@@ -29,6 +30,10 @@ function App() {
       {loadingDetection &&
         <p>Loading Face Detection...</p>
       }
+      <br></br>
+
+      {/* <SemButton /> */}
+
     </Fragment>
   );
 }
