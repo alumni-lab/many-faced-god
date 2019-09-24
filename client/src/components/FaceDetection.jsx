@@ -9,6 +9,8 @@ import * as canvas from 'canvas';
 
 import * as faceapi from 'face-api.js';
 
+import SemButton from './SemButton';
+
 
 // patch nodejs environment, we need to provide an implementation of
 // HTMLCanvasElement and HTMLImageElement, additionally an implementation
@@ -80,7 +82,9 @@ function FaceDetection(props) {
         {imageURL &&
           <Fragment>
             <img src={imageURL} alt="img" />
+
             <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"} />
+
             {facesCoordinates.map(faceCoordinates => {
               const divPositioning = {
                 top: faceCoordinates._y,
@@ -89,13 +93,7 @@ function FaceDetection(props) {
                 width: faceCoordinates._width,
               }
               return (
-                <div
-                  className={"face" + (visibleFaces ? "" : " invisible")}
-                  style={divPositioning}
-                  key={faceCoordinates._x}
-                  onClick={() => handleClickFace(divPositioning)}
-                >
-                </div>
+                <SemButton divPositioning={divPositioning} faceCoordinates={faceCoordinates} />
               )
             })}
           </Fragment>
