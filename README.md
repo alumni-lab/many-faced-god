@@ -38,14 +38,14 @@ Things to think about:
 
 - make sure you have Anaconda installed: https://medium.com/ayuth/install-anaconda-on-macos-with-homebrew-c94437d63a37
 
-- Install virtualenv to manage Python dependencies easily
-  `python3 -m pip install --user --upgrade pip`
-  `python3 -m pip install --user virtualenv`
+- Install virtualenv to manage Python dependencies easily  
+  `python3 -m pip install --user --upgrade pip`  
+  `python3 -m pip install --user virtualenv`  
 - INSIDE the FaceSwap folder
-  `python3 -m venv env`
-  THEN `source env/bin/activate` to "activate" the virtualenv
-  `pip install -r requirements.txt` to install dependencies
-  `pip install opencv-python` to install opencv
+  `python3 -m venv env`  
+  THEN `source env/bin/activate` to "activate" the virtualenv  
+  `pip install -r requirements.txt` to install dependencies  
+  `pip install opencv-python` to install opencv  
 
 - `npm i` on both `/server` and `/client` to install dependencies
 - using two terminals `npm start` to run both server and client
