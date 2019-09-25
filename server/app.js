@@ -48,13 +48,14 @@ app.post('/faceswap', (req, res, next) => {
     .then(({ filename, image }) => {
       console.log('Saved to', filename)  // Saved to /path/to/dest/image.jpg
     })
+    .then(()=>{
+     
+      shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/test1.jpg --dst ../public/test2.jpg --out results/result.jpg --correct_color')
+      // shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/crop.jpg --out results/result.jpg --correct_color')
+    })
     .catch((err) => console.error(err))
 
 })
-
-app.post('/faceswap', (req, res, ) => {
-  console.log(req.body.divPositioning)
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
