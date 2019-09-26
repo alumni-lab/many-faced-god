@@ -93,7 +93,15 @@ function FaceDetection(props) {
                 width: faceCoordinates._width,
               }
               return (
-                <SemButton divPositioning={divPositioning} faceCoordinates={faceCoordinates} />
+                //old code for testing server side face swapping
+                <div
+                  className={"face" + (visibleFaces ? "" : " invisible")}
+                  style={divPositioning}
+                  key={faceCoordinates._x}
+                  onClick={() => handleClickFace(divPositioning)}
+                >
+                </div>
+                // <SemButton divPositioning={divPositioning} faceCoordinates={faceCoordinates} />
               )
             })}
           </Fragment>
