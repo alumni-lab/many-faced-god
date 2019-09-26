@@ -36,7 +36,7 @@ app.post('/upload', (req, res, next) => {
 app.post('/faceswap', (req, res, next) => {
   const { divPositioning } = req.body;
   const { top, left, height, width } = divPositioning;
-  shell.exec(`convert public/image.jpg -crop ${width}x${height}+${left}+${top} public/crop.jpg`)
+  shell.exec(`convert public/image.jpg -crop ${width+40}x${height+40}+${left-20}+${top-20} public/crop.jpg`)
 
   const options = {
     url: 'https://thispersondoesnotexist.com/image',
@@ -50,8 +50,8 @@ app.post('/faceswap', (req, res, next) => {
     })
     .then(()=>{
      
-      shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/test1.jpg --dst ../public/test2.jpg --out results/result.jpg --correct_color')
-      // shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/crop.jpg --out results/result.jpg --correct_color')
+      // shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/test1.jpg --dst ../public/test2.jpg --out results/result.jpg --correct_color')
+      shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/crop.jpg --out results/result.jpg --correct_color')
     })
     .catch((err) => console.error(err))
 
