@@ -76,6 +76,8 @@ function FaceDetection(props) {
     console.log(divPositioning);
   }
 
+  console.log('faceCoordinates', facesCoordinates)
+
   return (
     <Fragment>
       <div className="image-container">
@@ -85,8 +87,9 @@ function FaceDetection(props) {
 
             <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"} />
 
-            {facesCoordinates.map(faceCoordinates => {
+            {facesCoordinates.map((faceCoordinates, index )=> {
               const divPositioning = {
+                id: index,
                 top: faceCoordinates._y,
                 left: faceCoordinates._x,
                 height: faceCoordinates._height,
