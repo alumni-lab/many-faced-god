@@ -62,6 +62,9 @@ app.post('/faceswap', (req, res, next) => {
       // shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/test1.jpg --dst ../public/test2.jpg --out results/result.jpg --correct_color')
       shell.exec(`cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/face_${id}.jpg --out ../public/face_${id}_swapped_${id_object[`face_${id}`]}.jpg --correct_color`)
     })
+    // .then(()=>{
+    //   shell.exec(`magick`)
+    // })
     .catch((err) => console.error(err))
 
 })
