@@ -28,8 +28,9 @@ app.post('/upload', (req, res, next) => {
     if (err) {
       return res.status(500).send(err);
     }
+    shell.exec('cp public/image.jpg public/faceswapped.jpg')
     res.json({
-      file: `public/${filename}`
+      file: `public/faceswapped.jpg`
     });
   });
 })
@@ -58,13 +59,14 @@ app.post('/faceswap', (req, res, next) => {
       console.log('Saved to', filename)  // Saved to /path/to/dest/image.jpg
     })
     .then(()=>{
-     
-      // shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/test1.jpg --dst ../public/test2.jpg --out results/result.jpg --correct_color')
       shell.exec(`cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/face_${id}.jpg --out ../public/face_${id}_swapped_${id_object[`face_${id}`]}.jpg --correct_color`)
     })
-    // .then(()=>{
-    //   shell.exec(`magick`)
-    // })
+    .then(()=>{
+      shell.exec(`convert  public/faceswapped.jpg  public/face_${id}_swapped_${id_object[`face_${id}`]}.jpg  -geometry +${left-20}+${top-20} -composite public/faceswapped.jpg`)
+    })
+    .then(()=>{
+      res.json("200")
+    })
     .catch((err) => console.error(err))
 
 })
