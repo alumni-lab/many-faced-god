@@ -26,11 +26,12 @@ faceapi.env.monkeyPatch({
 })
 
 function FaceDetection(props) {
-  const { imageURL, setLoadingModels, setLoadingDetection, imageFile } = props;
+  const { imageURL, setLoadingModels, setLoadingDetection, imageFile, setImageURL } = props;
 
   const [detectedFaces, setDetectedFaces] = useState(false);
   const [visibleFaces, setVisibleFaces] = useState(true);
   const [facesCoordinates, setFacesCoordinates] = useState([]);
+  const [swappedImage, setSwappedImage] = useState("")
 
   useEffect(() => {
     const path = '/models';
@@ -72,18 +73,18 @@ function FaceDetection(props) {
   const handleClickFace = (divPositioning) => {
     axios.post('http://localhost:3001/faceswap', {
       divPositioning
+    }).then(() =>{
+      setSwappedImage(imageURL+'?'+ new Date().getTime())
     })
-    console.log(divPositioning);
+    
   }
-
-  console.log('faceCoordinates', facesCoordinates)
 
   return (
     <Fragment>
       <div className="image-container">
         {imageURL &&
           <Fragment>
-            <img src={imageURL} alt="img" />
+            <img src={swappedImage||imageURL} alt="img" />
 
             <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"} />
 

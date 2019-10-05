@@ -23,6 +23,7 @@ function App() {
         setLoadingModels={setLoadingModels}
         setLoadingDetection={setLoadingDetection}
         imageFile={imageFile}
+        setImageURL={setImageURL}
       />
       {loadingModels &&
         <p>Loading Models...</p>
