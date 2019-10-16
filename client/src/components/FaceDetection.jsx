@@ -26,11 +26,12 @@ faceapi.env.monkeyPatch({
 })
 
 function FaceDetection(props) {
-  const { imageURL, setLoadingModels, setLoadingDetection, imageFile } = props;
+  const { imageURL, setLoadingModels, setLoadingDetection, imageFile, setImageURL } = props;
 
   const [detectedFaces, setDetectedFaces] = useState(false);
   const [visibleFaces, setVisibleFaces] = useState(true);
   const [facesCoordinates, setFacesCoordinates] = useState([]);
+  const [swappedImage, setSwappedImage] = useState("")
 
   useEffect(() => {
     const path = '/models';
@@ -72,8 +73,10 @@ function FaceDetection(props) {
   const handleClickFace = (divPositioning) => {
     axios.post('http://localhost:3001/faceswap', {
       divPositioning
+    }).then(() =>{
+      setSwappedImage(imageURL+'?'+ new Date().getTime())
     })
-    console.log(divPositioning);
+    
   }
 
   return (
@@ -81,12 +84,13 @@ function FaceDetection(props) {
       <div className="image-container">
         {imageURL &&
           <Fragment>
-            <img src={imageURL} alt="img" />
+            <img src={swappedImage||imageURL} alt="img" />
 
             <canvas id="detected-faces" className={visibleFaces ? "" : "invisible"} />
 
-            {facesCoordinates.map(faceCoordinates => {
+            {facesCoordinates.map((faceCoordinates, index )=> {
               const divPositioning = {
+                id: index,
                 top: faceCoordinates._y,
                 left: faceCoordinates._x,
                 height: faceCoordinates._height,
@@ -94,14 +98,14 @@ function FaceDetection(props) {
               }
               return (
                 //old code for testing server side face swapping
-                // <div
-                //   className={"face" + (visibleFaces ? "" : " invisible")}
-                //   style={divPositioning}
-                //   key={faceCoordinates._x}
-                //   onClick={() => handleClickFace(divPositioning)}
-                // >
-                // </div>
-                <SemButton divPositioning={divPositioning} faceCoordinates={faceCoordinates} />
+                <div
+                  className={"face" + (visibleFaces ? "" : " invisible")}
+                  style={divPositioning}
+                  key={faceCoordinates._x}
+                  onClick={() => handleClickFace(divPositioning)}
+                >
+                </div>
+                // <SemButton divPositioning={divPositioning} faceCoordinates={faceCoordinates} />
               )
             })}
           </Fragment>

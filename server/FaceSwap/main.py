@@ -121,9 +121,9 @@ if __name__ == '__main__':
     cv2.imwrite(args.out, output)
 
     ##For debug
-    if not args.no_debug_window:
-        cv2.imshow("From", dst_img)
-        cv2.imshow("To", output)
-        cv2.waitKey(0)
+    # if not args.no_debug_window:
+    #     cv2.imshow("From", dst_img)
+    #     cv2.imshow("To", output)
+    #     cv2.waitKey(0)
         
-        cv2.destroyAllWindows()
+    #     cv2.destroyAllWindows()

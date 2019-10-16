@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const download = require('image-downloader')
 var shell = require('shelljs');
+const id_object = {}; // for keeping track how many time each face has been swapped
 
 const app = express();
 
@@ -27,16 +28,17 @@ app.post('/upload', (req, res, next) => {
     if (err) {
       return res.status(500).send(err);
     }
+    shell.exec('cp public/image.jpg public/faceswapped.jpg')
     res.json({
-      file: `public/${filename}`
+      file: `public/faceswapped.jpg`
     });
   });
 })
 
 app.post('/faceswap', (req, res, next) => {
   const { divPositioning } = req.body;
-  const { top, left, height, width } = divPositioning;
-  shell.exec(`convert public/image.jpg -crop ${width+40}x${height+40}+${left-20}+${top-20} public/crop.jpg`)
+  const { top, left, height, width, id } = divPositioning;
+  shell.exec(`convert public/image.jpg -crop ${width+40}x${height+40}+${left-20}+${top-20} public/face_${id}.jpg`)
 
   const options = {
     url: 'https://thispersondoesnotexist.com/image',
@@ -44,14 +46,26 @@ app.post('/faceswap', (req, res, next) => {
     timeout: 5000
   }
 
+  if (id_object[`face_${id}`] || id_object[`face_${id}`] === 0){
+    console.log('condition triggered')
+    id_object[`face_${id}`] += 1;
+  } else {
+    id_object[`face_${id}`] = 0;
+  }
+  console.log(id_object);
+
   download.image(options)
     .then(({ filename, image }) => {
       console.log('Saved to', filename)  // Saved to /path/to/dest/image.jpg
     })
     .then(()=>{
-     
-      // shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/test1.jpg --dst ../public/test2.jpg --out results/result.jpg --correct_color')
-      shell.exec('cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/crop.jpg --out results/result.jpg --correct_color')
+      shell.exec(`cd FaceSwap && source env/bin/activate && python main.py --src ../public/faceswap.jpg --dst ../public/face_${id}.jpg --out ../public/face_${id}_swapped_${id_object[`face_${id}`]}.jpg --correct_color`)
+    })
+    .then(()=>{
+      shell.exec(`convert  public/faceswapped.jpg  public/face_${id}_swapped_${id_object[`face_${id}`]}.jpg  -geometry +${left-20}+${top-20} -composite public/faceswapped.jpg`)
+    })
+    .then(()=>{
+      res.json("200")
     })
     .catch((err) => console.error(err))
 
